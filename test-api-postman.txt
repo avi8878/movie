@@ -1,0 +1,25 @@
+get movie resource by id 13
+url :http://localhost:8080/movie/13
+method: Get
+
+create movie resource
+url :http://localhost:8080/movie/
+method: Post
+jsonbody :{    "movieTitle":"Star War",
+               "movieCategory":"sifi",  
+	      "movieStarRating":"3.0"
+            }
+
+
+update movie resource
+url :http://localhost:8080/movie/13
+method: Post
+jsonbody :{    "movieTitle":"Star War update",
+               "movieCategory":"sifi update",  
+	      "movieStarRating":"4.0"
+            }
+
+
+delete movie resource by id 13
+url :http://localhost:8080/movie/13
+method: Delete
