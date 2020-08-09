@@ -1,0 +1,10 @@
+CREATE TABLE `movie` (
+  `movie_id` int NOT NULL AUTO_INCREMENT,
+  `movie_title` varchar(45) COLLATE ascii_bin NOT NULL,
+  `movie_category` varchar(10) COLLATE ascii_bin NOT NULL,
+  `movie_star_rating` varchar(10) COLLATE ascii_bin NOT NULL,
+  PRIMARY KEY (`movie_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=ascii COLLATE=ascii_bin;
+
+
+https://github.com/avi8878/movie.git
