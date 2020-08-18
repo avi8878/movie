@@ -1,19 +1,16 @@
 package com.avi.movie.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
-
-import java.util.Optional;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
 
 import com.avi.movie.domain.Movie;
-import com.avi.movie.dto.MovieDTO;
 import com.avi.movie.repository.MovieRepository;
 import com.avi.movie.service.impl.MovieServiceImpl;
 
@@ -24,9 +21,6 @@ public class MovieServiceTestCases {
 	     
 	  @Mock
 	  MovieRepository movieRepository;
-	  
-	  @Mock
-	  ModelMapper modelMapper;
 	 
 	   @Before
 	   public void init() {
@@ -73,16 +67,9 @@ public class MovieServiceTestCases {
         movie.setMovieId(1);
         movie.setMovieCategory("genre_dummy");
         movie.setMovieStarRating(0.0f);
-     
-        MovieDTO movieDto = new MovieDTO();
-        movie.setMovieTitle("name_dummy");
-        movie.setMovieId(1);
-        movie.setMovieCategory("genre_dummy");
-        movie.setMovieStarRating(0.0f);
         
-        when(modelMapper.map(movieDto,Movie.class)).thenReturn(movie);
         when(movieRepository.save(movie)).thenReturn(movie);
-        Integer expected =movieService.createMovie(movieDto);
+        Integer expected =movieService.createMovie(movie);
       
         assertEquals(Integer.valueOf( movie.getMovieId()), expected);
     }
@@ -120,20 +107,14 @@ public class MovieServiceTestCases {
         movie.setMovieId(1);
         movie.setMovieCategory("genre_dummy_updated");
         movie.setMovieStarRating(0.0f);
-     
-        MovieDTO movieDto = new MovieDTO();
-        movieDto.setMovieTitle("name_dummy_updated");
-        movieDto.setMovieCategory("genre_dummy_updated");
-        movieDto.setMovieStarRating(0.0f);
         
         when(movieRepository.findByMovieId(1)).thenReturn(checkMovieInDB);
-        when(modelMapper.map(movieDto,Movie.class)).thenReturn(movie);
         when(movieRepository.save(movie)).thenReturn(movie);
-        Movie expected =movieService.updateMovie(movieDto,1);
+        Movie expected =movieService.updateMovie(movie,1);
       
-        assertEquals(movieDto.getMovieTitle(), expected.getMovieTitle());
-        assertEquals(movieDto.getMovieCategory(), expected.getMovieCategory());
-        assertEquals(movieDto.getMovieStarRating(), expected.getMovieStarRating(),0.01);
+        assertEquals(movie.getMovieTitle(), expected.getMovieTitle());
+        assertEquals(movie.getMovieCategory(), expected.getMovieCategory());
+        assertEquals(movie.getMovieStarRating(), expected.getMovieStarRating(),0.01);
     }
     
     @Test
@@ -146,14 +127,9 @@ public class MovieServiceTestCases {
         movie.setMovieCategory("genre_dummy_updated");
         movie.setMovieStarRating(0.0f);
      
-        MovieDTO movieDto = new MovieDTO();
-        movieDto.setMovieTitle("name_dummy_updated");
-        movieDto.setMovieCategory("genre_dummy_updated");
-        movieDto.setMovieStarRating(0.0f);
-        
         when(movieRepository.findByMovieId(1)).thenReturn(null);
 		
-        Movie expected =movieService.updateMovie(movieDto,1);
+        Movie expected =movieService.updateMovie(movie,1);
       
         assertEquals(null, expected);
        

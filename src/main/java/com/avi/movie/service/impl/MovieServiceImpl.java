@@ -2,11 +2,10 @@ package com.avi.movie.service.impl;
 
 import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.avi.movie.domain.Movie;
-import com.avi.movie.dto.MovieDTO;
 import com.avi.movie.repository.MovieRepository;
 import com.avi.movie.service.MovieService;
 
@@ -20,10 +19,6 @@ public class MovieServiceImpl implements MovieService {
 
 @Autowired
 MovieRepository movieRepository ;
-
-@Autowired
-ModelMapper modelMapper;
-
 
 /**
 * The aim of this method is to retrieve Movie for given movie Id.
@@ -42,9 +37,8 @@ public Movie getMovieById(Integer id) throws Exception {
 * @return Integer  created movie identifier 
 */
 @Override
-public Integer createMovie(MovieDTO movieDTO) throws Exception {
+public Integer createMovie(Movie movie) throws Exception {
 
-	Movie movie =modelMapper.map(movieDTO, Movie.class);
 	return movieRepository.save(movie).getMovieId();
 }
 
@@ -69,12 +63,11 @@ public boolean deleteMovieById(Integer id) throws Exception {
 * @return Movie  Updated movie object 
 */
 @Override
-public Movie updateMovie(MovieDTO movieDTO,Integer movieId) throws Exception {
+public Movie updateMovie(Movie movieUpdated,Integer movieId) throws Exception {
 	 Movie movie = movieRepository.findByMovieId(movieId);
 	 if (!Optional.ofNullable(movie).isPresent())
 			return  null;
 	 
-	 Movie movieUpdated =modelMapper.map(movieDTO, Movie.class);
 	 movieUpdated.setMovieId(movieId);
 	 return movieRepository.save(movieUpdated);
 } 

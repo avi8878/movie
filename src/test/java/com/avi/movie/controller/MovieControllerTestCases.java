@@ -1,9 +1,7 @@
 package com.avi.movie.controller;
 
 import static org.hamcrest.core.Is.is;
-import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -18,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.avi.movie.domain.Movie;
-import com.avi.movie.dto.MovieDTO;
 import com.avi.movie.service.MovieService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -78,7 +75,7 @@ public class MovieControllerTestCases {
     public void callCreateMovieSuccess()
       throws Exception {
         // create mock data
-        MovieDTO movie = new MovieDTO();
+        Movie movie = new Movie();
         movie.setMovieTitle("nameTest");
         movie.setMovieCategory("genreTest");
         movie.setMovieStarRating(0.0f);
@@ -87,9 +84,7 @@ public class MovieControllerTestCases {
         mvc.perform(MockMvcRequestBuilders.post("/movie/")
           .contentType(MediaType.APPLICATION_JSON)
           .content(objectMapper.writeValueAsString(movie)))
-          .andExpect(status().isCreated())
-          .andExpect(header().exists("location"))
-          . andExpect(header().string("location", "http://localhost/movie/1"));
+          .andExpect(status().isCreated());
           
     }
     
@@ -98,7 +93,7 @@ public class MovieControllerTestCases {
     public void callCreateMovieButMovieNotCreated()
       throws Exception {
         // create mock data
-        MovieDTO movie = new MovieDTO();
+        Movie movie = new Movie();
         movie.setMovieTitle("nameTest");
         movie.setMovieCategory("genreTest");
         movie.setMovieStarRating(0.0f);
@@ -149,7 +144,7 @@ public class MovieControllerTestCases {
     public void callMovieUpdateSuccessfully()
       throws Exception {
         // create mock data
-        MovieDTO movieDto = new MovieDTO();
+        Movie movieDto = new Movie();
         movieDto.setMovieTitle("nameTest");
         movieDto.setMovieCategory("genreTest");
         movieDto.setMovieStarRating(0.0f);
@@ -176,7 +171,7 @@ public class MovieControllerTestCases {
     public void callUpdateMovieThrowRuntimeException()
       throws Exception {
         // create mock data
-        MovieDTO movieDTO = new MovieDTO();
+        Movie movieDTO = new Movie();
         movieDTO.setMovieTitle("nameTest");
         movieDTO.setMovieCategory("genreTest");
         movieDTO.setMovieStarRating(0.0f);
@@ -192,15 +187,15 @@ public class MovieControllerTestCases {
     public void callUpdateMovieButMovieNotExist()
       throws Exception {
         // create mock data
-        MovieDTO movieDto = new MovieDTO();
-        movieDto.setMovieTitle("nameTest");
-        movieDto.setMovieCategory("genreTest");
-        movieDto.setMovieStarRating(0.0f);
+        Movie movie = new Movie();
+        movie.setMovieTitle("nameTest");
+        movie.setMovieCategory("genreTest");
+        movie.setMovieStarRating(0.0f);
         
-        when(movieService.updateMovie(movieDto,1)).thenReturn(null);
+        when(movieService.updateMovie(movie,1)).thenReturn(null);
         mvc.perform(MockMvcRequestBuilders.put("/movie/{id}",1)
           .contentType(MediaType.APPLICATION_JSON)
-          .content(objectMapper.writeValueAsString(movieDto)))
+          .content(objectMapper.writeValueAsString(movie)))
           .andExpect(status().isNotFound());
     }
 }

@@ -37,8 +37,8 @@ public class MovieControllerAdvice extends ResponseEntityExceptionHandler {
 	* The aim of this method is to handle RuntimeException in application.
 	* @return ResponseEntity this is the ResponseEntity that holds error message,time,http status 500
 	*/
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<CustomErrorResponse> runtimeException(Exception ex, WebRequest request) {
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<CustomErrorResponse> exception(Exception ex, WebRequest request) {
 
         CustomErrorResponse errors = new CustomErrorResponse();
         errors.setTimestamp(LocalDateTime.now());

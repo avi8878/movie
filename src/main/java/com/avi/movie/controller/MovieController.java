@@ -1,7 +1,5 @@
 package com.avi.movie.controller;
 
-import java.net.URI;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.avi.movie.domain.Movie;
-import com.avi.movie.dto.MovieDTO;
 import com.avi.movie.exception.MovieNotFoundException;
 import com.avi.movie.service.MovieService;
 
@@ -50,15 +46,13 @@ public class MovieController {
 	/**
 	* The aim of this method is to create Movie Resource.
 	* @param movieDTO this is the MovieDTO object to map input movie json data to DTO.
-	* @return ResponseEntity this is the ResponseEntity that holds path of resource and created status code
+	* @return ResponseEntity this is the ResponseEntity that holds created status code (201).
 	*  @exception Exception this exception will be manage globally in Controller Advice
 	*/
 	@PostMapping("/")
-	public ResponseEntity<Object> createMovie(@RequestBody MovieDTO movieDTO) throws Exception {
-		Integer movie = movieService.createMovie(movieDTO);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				       .buildAndExpand(movie).toUri();
-		return ResponseEntity.created(location).build();
+	public ResponseEntity<Object> createMovie(@RequestBody Movie movie) throws Exception {
+		 movieService.createMovie(movie);
+		return new ResponseEntity<Object>(HttpStatus.CREATED);
 	}
 	
 	/**
@@ -86,13 +80,13 @@ public class MovieController {
 	* @exception Exception this exception will be manage globally in Controller Advice
 	*/
    @PutMapping("/{id}")
-   public ResponseEntity<Movie> updateMovie(@RequestBody MovieDTO movieDTO,@PathVariable Integer id) throws Exception {
-	Movie movie = movieService.updateMovie(movieDTO, id);
+   public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie,@PathVariable Integer id) throws Exception {
+	Movie updatedMovie = movieService.updateMovie(movie, id);
 	
-	if (movie==null)
+	if (updatedMovie==null)
 		throw  new MovieNotFoundException("movie does not exist for given Id : "+id);
 	     
-	return new ResponseEntity<Movie>(movie, HttpStatus.OK);
+	return new ResponseEntity<Movie>(updatedMovie, HttpStatus.OK);
 
   }
 	
