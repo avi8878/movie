@@ -6,6 +6,6 @@ CREATE TABLE `movie` (
   PRIMARY KEY (`movie_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=ascii COLLATE=ascii_bin;
 
-
 https://github.com/avi8878/movie.git
 check changes
+two is updated
